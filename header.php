@@ -10,16 +10,26 @@
     <script src="./js/main.js" async></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
-    <title>Blog</title>
+    <title>Online Library</title>
 </head>
 <body>
      <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="index.php">Blog</a>
-            <?php 
-            if(isset($_SESSION['userId']))  {
+            <a class="navbar-brand" href="index.php">Online Library</a>
+            <?php
+                if(isset($_SESSION['userId']) && $_SESSION['role'] == 'admin')  {
+                echo '
+                <form action="admin_panel.php" method="post">
+                    <button type="submit" class="btn" name="admin">Admin Panel</button>
+                </form>
+                <form action="includes/logout.inc.php" method="post" class="ml-auto">
+                    <span class="pr-3"> Welcome '.$_SESSION["userName"].'</span>
+                    <button type="submit" name="logout-submit" class="btn btn-primary">Logout</button>
+                </form>';
+            } elseif(isset($_SESSION['userId'])) {
                 echo '
                 <form action="includes/logout.inc.php" method="post" class="ml-auto">
+                    <span class="pr-3"> Welcome '.$_SESSION["userName"].'</span>
                     <button type="submit" name="logout-submit" class="btn btn-primary">Logout</button>
                 </form>';
             } else {

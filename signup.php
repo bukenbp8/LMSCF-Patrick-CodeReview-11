@@ -33,6 +33,8 @@
                     <div class="form-group">
                         <input type="text" name="uid" placeholder="Username" class="form-control mb-2">
                         <input type="text" name="mail" placeholder="Email" class="form-control mb-2">
+                        <input type="text" name="firstName" placeholder="First Name" class="form-control mb-2">
+                        <input type="text" name="lastName" placeholder="Second Name" class="form-control mb-2">
                         <input type="password" name="pwd" placeholder="Password" class="form-control mb-2">
                         <input type="password" name="pwd-repeat" placeholder="Repeat password" class="form-control mb-2">
                         <button type="submit" name="signup-submit" class="btn btn-primary col-12">Sign up</button>
