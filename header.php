@@ -28,6 +28,9 @@
                 </form>';
             } elseif(isset($_SESSION['userId'])) {
                 echo '
+                <form action="my_media.php?id='.$_SESSION['userId'].'" method="post">
+                    <button type="submit" class="btn" name="admin">My Media</button>
+                </form>
                 <form action="includes/logout.inc.php" method="post" class="ml-auto">
                     <span class="pr-3"> Welcome '.$_SESSION["userName"].'</span>
                     <button type="submit" name="logout-submit" class="btn btn-primary">Logout</button>

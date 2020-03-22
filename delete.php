@@ -1,6 +1,5 @@
 <?php 
     require_once 'includes/dbh.inc.php';
-    require "header.php";
 
     if ($_GET['id'] && $_GET['id2'] && $_GET['id3']) {
         $id = $_GET['id'];

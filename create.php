@@ -11,7 +11,7 @@
             <label>Image Link</label>
             <input type="text" name="img"  class="form-control mb-2">
             <label>ISBN</label>
-            <input type="text" name="isbn" class="form-control mb-2"">
+            <input type="text" name="isbn" class="form-control mb-2">
             <label>Description</label>
             <input type="text" name="descr" class="form-control mb-2">
             <label>Release Date</label>
