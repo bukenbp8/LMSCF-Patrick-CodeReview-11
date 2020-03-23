@@ -14,13 +14,17 @@
 </head>
 <body>
      <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
             <a class="navbar-brand" href="index.php">Online Library</a>
             <?php
                 if(isset($_SESSION['userId']) && $_SESSION['role'] == 'admin')  {
                 echo '
                 <form action="admin_panel.php" method="post">
                     <button type="submit" class="btn" name="admin">Admin Panel</button>
+                </form>
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <form action="includes/logout.inc.php" method="post" class="ml-auto">
                     <span class="pr-3"> Welcome '.$_SESSION["userName"].'</span>
@@ -30,6 +34,10 @@
                 echo '
                 <form action="my_media.php?id='.$_SESSION['userId'].'" method="post">
                     <button type="submit" class="btn" name="admin">My Media</button>
+                </form>
+                <form class="form-inline mx-auto">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
                 </form>
                 <form action="includes/logout.inc.php" method="post" class="ml-auto">
                     <span class="pr-3"> Welcome '.$_SESSION["userName"].'</span>
@@ -42,7 +50,7 @@
                         <input type="text" name="mailuid" placeholder="Username/Email..." class="form-control col mr-2">
                         <input type="password" name="pwd" placeholder="Password..." class="form-control col mr-2">
                         <button type="submit" name="login-submit" class="btn btn-primary mr-2">Login</button>
-                        <a href="signup.php" class="btn btn-warning mr-2">Signup</a>
+                        <a href="signup.php" class="btn btn-warning mr-2 my-sm-0">Signup</a>
                     </div>
                 </form>'
                ;
