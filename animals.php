@@ -30,15 +30,11 @@
                 echo '
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <a class="navbar-brand" href="index.php">Pet Adoption</a>
-                    
-                    <a href="index.php" class="btn">All animals</a>
-                    <a href="general.php" class="btn">Juniors</a>
-                    <a href="senior.php" class="btn">Seniors</a>
+                    <form action="my_pets.php?id='.$_SESSION['id'].'" method="post">
+                        <button type="submit" class="btn">My Adoptions</button>
+                    </form>
                     <form action="index.php" class="form-inline ml-auto" id="search_form" method="post">
                         <input type="text" name="search" id="search"  class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
-                    </form>
-                    <form action="my_pets.php?id='.$_SESSION['id'].'" method="post" class="ml-auto">
-                        <button type="submit" class="btn btn-info">My Adoptions</button>
                     </form>
                     <form action="includes/logout.inc.php" method="post" class="ml-auto">
                         <span class="pr-3"> Welcome '.$_SESSION['fullname'].'</span>
@@ -63,8 +59,40 @@
             ?>              
         </nav>
      </header>
-     <script src="./js/main.js"></script>
-     <script
+
+<main>
+    <div class="container mt-4 col-md-8">
+        <h2 class="mt-4 mb-4">Add animal</h2>
+        <form class="form-group bg-light rounded p-4 pr-5 pl-5" action="actions/a_create.php"  method="post">
+            <label>Animal size</label><br>
+            <select name ="size" id="typeAnimal" class="form-control mb-2">
+                <option value='small'>small</option>
+                <option value='big'>big</option>
+            </select>
+            <label>Name</label>
+            <input type="text" name="name" class="form-control mb-2">
+            <label>Image</label>
+            <input type="text" name="img"  class="form-control mb-2">
+            <label>Description</label>
+            <input type="text" name="descr" class="form-control mb-2">
+            <label id="websiteL">Website</label>
+            <input type="text" name="website" id="website" class="form-control mb-2">
+            <label id="hobbiesL">Hobbies</label>
+            <input type="text" name="hobbies" id="hobbies" class="form-control mb-2">
+            <label>Age</label>
+            <input type="text" name="age" id="age" class="form-control mb-2">
+            <label id="dateL">Date when available</label>
+            <input type="date" name="date" id="date" class="form-control mb-2">
+            <label>Location</label>
+            <input type="text" name="location" class="form-control mb-2">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a href="index.php" class="btn btn-primary">Back</a>
+        </form>
+    </div>
+</main>
+
+<script src="js/animals.js"></script>
+<script
 			  src="https://code.jquery.com/jquery-3.4.1.js"
 			  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 			  crossorigin="anonymous"></script>

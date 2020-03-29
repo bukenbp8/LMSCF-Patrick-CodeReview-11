@@ -3,24 +3,29 @@
     require_once 'includes/dbh.inc.php';
     require "header.php";
 
-    $sql = "SELECT idMedia, titelMedia, imgMedia, typeMedia, statusMedia, firstNameAuthor, lastNameAuthor, authorID, idPublisher, namePublisher FROM media t1 JOIN authors t2 ON t1.authorIdMedia = t2.authorID JOIN publisher t3 ON t1.publisherIdMedia = idPublisher";
+    $sql = "SELECT * FROM animals";
+    
     $result = mysqli_query($conn, $sql);
+    
 
-    if($_SESSION['role'] == 'admin')   {
+    if($_SESSION['role'] == 'Admin')   {
         echo '
         <main>
             <div class="container">
                 <h2 class="mt-3 mb-2">Hello Admin!</h2>
-                <a href= "create.php"><button class="btn btn-info m-3">Add Media</button></a>
+                <a href= "animals.php"><button class="btn btn-info m-3">Add Animals</button></a>
+                <h3 class="mt-3 mb-2">Animals</h3>
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th scope="col">Id</th>
-                            <th scope="col">Titel</th>
-                            <th scope="col">Cover</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Media</th>
-                            <th scope="col">Publisher</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Website/Hobby</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Size</th>
+                            <th scope="col">Location</th>
                             <th scope="col">Status</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -31,15 +36,17 @@
                     foreach ($rows as $value) {
                         echo '
                         <tr>
-                            <th scope="row">'.$value['idMedia'].'</th>
-                            <td>'.$value['titelMedia'].'</td>
-                            <td><img src='.$value['imgMedia'].' height="50" width="50"></td>
-                            <td>'.$value['firstNameAuthor']." ".$value['lastNameAuthor'].'</td>
-                            <td>'.$value['typeMedia'].'</td>
-                            <td>'.$value['namePublisher'].'</td>
-                            <td>'.$value['statusMedia'].'</td>
-                            <td><a href="edit.php?id='.$value['idMedia'].'&id2='.$value['authorID'].'&id3='.$value['idPublisher'].'"><button class="btn btn-warning">Edit</button></a></td>
-                            <td><a href="delete.php?id='.$value['idMedia'].'&id2='.$value['authorID'].'&id3='.$value['idPublisher'].'"><button class="btn btn-danger">Delete</button></a></td>
+                            <th scope="row">'.$value['id'].'</th>
+                            <td>'.$value['name'].'</td>
+                            <td><img src='.$value['img'].' height="50" width="50"></td>
+                            <td>'.$value['descr'].'</td>
+                            <td>'.(($value['size'] === 'big') ? $value['hobbies']:$value['website']).'</td>
+                            <td>'.$value['age']. ' ('.(($value['senior'] == 'yes')?'senior':'junior').')</td>
+                            <td>'.$value['size'].'</td>
+                            <td>'.$value['location'].'</td>
+                            <td>'.$value['status'].' '.(($value['age'] >= 8) ? $value['date']:' ').'</td>
+                            <td><a href="edit.php?id='.$value['id'].'"><button class="btn btn-warning">Edit</button></a></td>
+                            <td><a href="delete.php?id='.$value['id'].'"><button class="btn btn-danger">Delete</button></a></td>
                         </tr>';
                     }
                     echo '

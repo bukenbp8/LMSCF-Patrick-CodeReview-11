@@ -3,3 +3,12 @@
     transition: 1s opacity;
     text-align: center;
 }
+
+#map {
+    height: 300px;
+    width: 100%;
+}
+
+.width {
+    width: 100%;
+}

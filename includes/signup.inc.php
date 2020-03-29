@@ -3,14 +3,13 @@ if (isset($_POST['signup-submit'])) {
 
     require 'dbh.inc.php';
 
-    $username = $_POST['uid'];
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $email = $_POST['mail'];
-    $password = $_POST['pwd'];
-    $passwordRepeat = $_POST['pwd-repeat'];
+    $username = mysqli_real_escape_string($conn, $_POST['uid']);
+    $fullName = mysqli_real_escape_string($conn, $_POST['fullName']);
+    $email = mysqli_real_escape_string($conn, $_POST['mail']);
+    $password = mysqli_real_escape_string($conn, $_POST['pwd']);
+    $passwordRepeat = mysqli_real_escape_string($conn, $_POST['pwd-repeat']);
 
-    if (empty($username) || empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($passwordRepeat)) {
+    if (empty($username) || empty($fullName) || empty($email) || empty($password) || empty($passwordRepeat)) {
         header("Location: ../signup.php?error=emptyfields&uid=".$username."&mail=".$email."&firstName".$firstName."&lastName".$lastName);
         exit();
     }
@@ -31,7 +30,7 @@ if (isset($_POST['signup-submit'])) {
         header("Location: ../signup.php?error=emptyfields&uid=".$username."&mail=".$email);
         exit();
     } else {
-        $sql = "SELECT uidUsers FROM users WHERE uidUsers=?";
+        $sql = "SELECT id FROM users WHERE id=?";
         $stmt = mysqli_stmt_init($conn);
         if (!mysqli_stmt_prepare($stmt, $sql)) {
             header("Location: ../signup.php?error=sqlerror");
@@ -46,7 +45,7 @@ if (isset($_POST['signup-submit'])) {
                 exit();
             } else {
 
-                $sql = "INSERT INTO users (uidUsers, firstNameUsers, lastNameUsers, emailUsers, pwdUsers) VALUES (?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO users (username, email, password, name) VALUES (?, ?, ?, ?)";
                 $stmt = mysqli_stmt_init($conn);
                 if (!mysqli_stmt_prepare($stmt, $sql)) {
                     header("Location: ../signup.php?error=sqlerror");
@@ -54,7 +53,7 @@ if (isset($_POST['signup-submit'])) {
                 } else {
                     $hashedPwd = password_hash($password, PASSWORD_DEFAULT);
 
-                    mysqli_stmt_bind_param($stmt, "sssss", $username, $firstName, $lastName, $email, $hashedPwd);
+                    mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $hashedPwd, $fullName);
                     mysqli_stmt_execute($stmt);
                     header("Location: ../signup.php?signup=success");
                     exit();

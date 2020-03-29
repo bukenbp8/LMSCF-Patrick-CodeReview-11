@@ -1,82 +1,117 @@
 <?php 
     require_once 'includes/dbh.inc.php';
-    require "header.php";
 
-    if ($_GET['id'] && $_GET['id2'] && $_GET['id3']) {
+    session_start();
+
+    if ($_GET['id']) {
         $id = $_GET['id'];
-        $id2 = $_GET['id2'];
-        $id3 = $_GET['id3'];
      
-        $sql = "SELECT * FROM media WHERE idMedia = {$id}";
-        $sql2 = "SELECT * FROM authors WHERE authorID = {$id2}";
-        $sql3 = "SELECT * FROM publisher WHERE idPublisher = {$id3}";
+        $sql = "SELECT * FROM animals WHERE id = {$id}";
         
         $result = $conn->query($sql);
-        $result2 = $conn->query($sql2);
-        $result3 = $conn->query($sql3);
-     
+
         $data = $result->fetch_assoc();
-        $data2 = $result2->fetch_assoc();
-        $data3 = $result3->fetch_assoc();
      
         $conn->close();
     }     
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Pet Adoption</title>
+</head>
+<body>
+     <header>
+            <?php
+                if(isset($_SESSION['id']) && $_SESSION['role'] == 'Admin')  {
+                echo '
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="index.php">Pet Adoption</a>
+                    <form action="admin_panel.php" method="post">
+                        <button type="submit" class="btn" name="admin">Admin Panel</button>
+                    </form>
+                    <form action="includes/logout.inc.php" method="post" class="ml-auto">
+                        <span class="pr-3"> Welcome '.$_SESSION["fullname"].'</span>
+                        <button type="submit" name="logout-submit" class="btn btn-primary">Logout</button>
+                    </form>';
+            } elseif(isset($_SESSION['id'])) {
+                echo '
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="index.php">Pet Adoption</a>
+                    <form action="my_pets.php?id='.$_SESSION['id'].'" method="post">
+                        <button type="submit" class="btn">My Adoptions</button>
+                    </form>
+                    <form action="index.php" class="form-inline ml-auto" id="search_form" method="post">
+                        <input type="text" name="search" id="search"  class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
+                    </form>
+                    <form action="includes/logout.inc.php" method="post" class="ml-auto">
+                        <span class="pr-3"> Welcome '.$_SESSION['fullname'].'</span>
+                        <button type="submit" name="logout-submit" class="btn btn-primary">Logout</button>
+                    </form>
+                    
+                ';
+            } else {
+                echo '
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="index.php">Pet Adoption</a>
+                    <form action="includes/login.inc.php" method="post" class="ml-auto">  
+                        <div class ="row">
+                            <input type="text" name="mailuid" placeholder="Username/Email..." class="form-control col mr-2">
+                            <input type="password" name="pwd" placeholder="Password..." class="form-control col mr-2">
+                            <button type="submit" name="login-submit" class="btn btn-primary mr-2">Login</button>
+                            <a href="signup.php" class="btn btn-warning mr-2 my-sm-0">Signup</a>
+                        </div>
+                    </form>'
+               ;
+            }
+            ?>              
+        </nav>
+     </header>
 <main>
     <div class="container mt-4 col-md-8">
-        <h2 class="mt-4 mb-4">Edit Media</h2>
+        <h2 class="mt-4 mb-4">Edit animals</h2>
         <form class="form-group bg-light rounded p-4 pr-5 pl-5" action="actions/a_edit.php"  method="post">
-            <label>Media Title</label>
-            <input type="text" name="title" class="form-control mb-2" value="<?php echo $data['titelMedia']; ?>">
+            <label>Animal size</label><br>
+            <select name ="size" id="typeAnimal" class="form-control mb-2">
+                <option value="<?php echo $data['size']; ?>"><?php echo $data['size']; ?></option>
+                <option value='small'>small</option>
+                <option value='big'>big</option>
+            </select>
+            <label>Name</label>
+            <input type="text" name="name" class="form-control mb-2" value="<?php echo $data['name']; ?>">
             <label>Image Link</label>
-            <input type="text" name="img"  class="form-control mb-2" value="<?php echo $data['imgMedia']; ?>">
-            <label>ISBN</label>
-            <input type="text" name="isbn" class="form-control mb-2" value="<?php echo $data['isbnMedia']; ?>">
+            <input type="text" name="img"  class="form-control mb-2" value="<?php echo $data['img']; ?>">
             <label>Description</label>
-            <input type="text" name="descr" class="form-control mb-2" value="<?php echo $data['descMedia']; ?>">
-            <label>Release Date</label>
-            <input type="text" name="pubDate" class="form-control mb-2" value="<?php echo $data['publDateMedia']; ?>">
-            <div class="form-group">
-                <label>Media Type</label>
-                <select class="form-control" name="typeMedia" >
-                    <option value="<?php echo $data['typeMedia']; ?>"><?php echo $data['typeMedia']; ?></option>
-                    <option value="Book">Book</option>
-                    <option value="DVD">DVD</option>
-                    <option value="CD">CD</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Status</label>
-                <select class="form-control" name="statusM" >
-                    <option value="<?php echo $data['statusMedia']; ?>"><?php echo $data['statusMedia']; ?></option>
-                    <option value="Available">Available</option>
-                    <option value="Not available">Not available</option>
-                </select>
-            </div>
-            <label>Author's First Name</label>
-            <input type="text" name="fname" class="form-control mb-2" value="<?php echo $data2['firstNameAuthor']; ?>">
-            <label>Author's Last Name</label>
-            <input type="text" name="lname" class="form-control mb-2" value="<?php echo $data2['lastNameAuthor']; ?>">
-            <label>Publisher</label>
-            <input type="text" name="pubName" class="form-control mb-2" value="<?php echo $data3['namePublisher']; ?>">
-            <div class="form-group">
-                <label>Publisher Size</label>
-                <select class="form-control" name="size" >
-                    <option value="<?php echo $data3['sizePublisher']; ?>"><?php echo $data3['sizePublisher']; ?></option>
-                    <option value="small">small</option>
-                    <option value="medium">medium</option>
-                    <option value="big">big</option>
-                </select>
-            </div>
-            <label>Publisher Address</label>
-            <input type="text" name="pubAddr" class="form-control mb-2" value="<?php echo $data3['addressPublisher']; ?>">
+            <input type="text" name="descr" class="form-control mb-2" value="<?php echo $data['descr']; ?>">
+            <label id="websiteL">Website</label>
+            <input type="text" name="website" id="website" class="form-control mb-2" value="<?php echo $data['website']; ?>">
+            <label id="hobbiesL">Hobbies</label>
+            <input type="text" name="hobbies" id="hobbies" class="form-control mb-2" value="<?php echo $data['hobbies']; ?>">
+            <label>Age</label>
+            <input type="text" name="age" id="age" class="form-control mb-2" value="<?php echo $data['age']; ?>">
+            <label id="dateL">Date when available</label>
+            <input type="date" name="date" id="date" class="form-control mb-2" value="<?php echo $data['date']; ?>">
+            <label>Location (seniors)</label>
+            <input type="text" name="location" class="form-control mb-2" value="<?php echo $data['location']; ?>">
             <button type="submit" class="btn btn-primary">Save Changes</button>
             <a href="index.php" class="btn btn-primary">Back</a>
-            <input type="hidden" name="id" value= "<?php echo $data['idMedia']; ?>" />
-            <input type="hidden" name="id2" value= "<?php echo $data2['authorID']; ?>" />
-            <input type="hidden" name="id3" value= "<?php echo $data3['idPublisher']; ?>" />
+            <input type="hidden" name="id" value="<?php echo $data['id']; ?>" />
+            <input type="hidden" name="senior" value="<?php if($data['age'] >= 8){ echo 'yes';} else { echo 'no';} ?>" />
         </form>
     </div>
 </main>
 
+<script src="js/a_edit.js"></script>
+<script
+			  src="https://code.jquery.com/jquery-3.4.1.js"
+			  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+			  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

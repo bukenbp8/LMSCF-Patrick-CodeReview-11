@@ -3,23 +3,24 @@
 require_once '../includes/dbh.inc.php';
 
 if ($_POST) {
-    $title = $_POST['title'];
+    $name = $_POST['name'];
     $img = $_POST['img'];
-    $isbn = $_POST['isbn'];
     $descr = $_POST['descr'];
-    $pubDate = $_POST['pubDate'];
-    $typeMedia = $_POST['typeMedia'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $pubName = $_POST['pubName'];
-    $size = $_POST['size'];
-    $pubAddr = $_POST['pubAddr'];
+    $website = $_POST['website'];
+    $age = $_POST['age'];
+    $location = $_POST['location'];
+    $hobbies = $_POST['hobbies'];
+    $date = $_POST['date'];
 
+    if($age < 8){
+        $senior = 'no';
+    } else {
+        $senior = 'yes';
+    }
 
-    $sql1 = "INSERT INTO media (titelMedia, imgMedia, isbnMedia, descMedia, publDateMedia, typeMedia) VALUES ('$title', '$img', '$isbn', '$descr', '$pubDate', '$typeMedia')";
-    $sql2 = "INSERT INTO authors (firstNameAuthor, lastNameAuthor) VALUES ('$fname', '$lname')";
-    $sql3 = "INSERT INTO publisher (namePublisher, sizePublisher, addressPublisher) VALUES ('$pubName','$size','$pubAddr')";
-    if($conn->query($sql1) === TRUE && $conn->query($sql2) === TRUE && $conn->query($sql3) === TRUE) {
+    $sql = "INSERT INTO animals (location, img, name, descr, website, age, hobbies, senior, date) VALUES ('$location', '$img', '$name', '$descr', '$website', '$age', '$hobbies', '$senior', '$date')";
+
+    if($conn->query($sql) === TRUE) {
         echo  "<p>Successfully Created</p>";
         echo "<a href='../create.php'><button type='button'>Back</button></a>";
         echo  "<a href='../index.php'><button type='button'>Home</button></a>";
@@ -28,3 +29,4 @@ if ($_POST) {
     }
     $conn->close();
 }
+

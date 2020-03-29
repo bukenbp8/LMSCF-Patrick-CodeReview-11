@@ -9,7 +9,7 @@
     } else {
         $search = '%';
     }
-    $query = mysqli_query($conn, "SELECT * FROM animals WHERE `name` LIKE '$search' || descr LIKE '$search' || website LIKE '$search' || age LIKE '$search'");
+    $query = mysqli_query($conn, "SELECT * FROM animals WHERE senior = 'yes'");
 ?>
 
 <main>
